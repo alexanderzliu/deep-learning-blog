@@ -1,0 +1,10 @@
+{
+  "hash": "31ae2c98e57904cba8c367b3e5cc5853",
+  "result": {
+    "markdown": "---\ntitle: Hugging Face NLP Course Notes\nauthor: Alex Liu\ndate: '2023-10-11'\ncategories:\n  - happy\n  - bappy\nimage: image.jpg\n---\n\n## NLP Tasks\n\n##### Zero-shot classification\n\nLabel text with your own provided set of labels without fine tuning the model on any of your own data\n\n```{{python}}\nclassifier = pipeline(\"zero-shot-classification\")\nclassifier(\n    \"This is a course about the Transformers library\",\n    candidate_labels=[\"education\", \"politics\", \"business\"],\n)\n\n{'sequence': 'This is a course about the Transformers library',\n 'labels': ['education', 'business', 'politics'],\n 'scores': [0.8445963859558105, 0.111976258456707, 0.043427448719739914]}\n```\n\n\n#####\n\n#####\n#####\n#####\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": []
+  }
+}

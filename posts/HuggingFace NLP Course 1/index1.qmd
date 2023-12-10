@@ -1,0 +1,188 @@
+---
+title: "Hugging Face NLP Course Notes: Transform Models Overview"
+author: "Alex Liu"
+date: "2023-10-11"
+categories: 
+    - happy
+    - bappy 
+image: "image.jpg"
+jupyter: python3
+---
+
+## What NLP tasks can transforms do?
+
+##### Zero-shot classification
+
+Label text with your own provided set of labels without fine tuning the model on any of your own data
+
+```{{python}}
+classifier = pipeline("zero-shot-classification")
+classifier(
+    "This is a course about the Transformers library",
+    candidate_labels=["education", "politics", "business"],
+)
+
+{'sequence': 'This is a course about the Transformers library',
+ 'labels': ['education', 'business', 'politics'],
+ 'scores': [0.8445963859558105, 0.111976258456707, 0.043427448719739914]}
+```
+
+
+##### Text Generation
+
+Auto-complete subsequent words based on a provided prompt 
+
+```{{python}}
+generator = pipeline("text-generation")
+generator("In this course, we will teach you how to")
+
+[{'generated_text': 'In this course, we will teach you how to understand and use '
+                    'data flow and data interchange when handling user data. We '
+                    'will be working with one or more of the most commonly used '
+                    'data flows — data flows of various types, as seen by the '
+                    'HTTP'}]
+```
+
+##### Mask Filling
+
+Fill in the blanks of a given text
+
+```{{python}}
+unmasker = pipeline("fill-mask")
+unmasker("This course will teach you all about <mask> models.", top_k=2)
+Copied
+[{'sequence': 'This course will teach you all about mathematical models.',
+  'score': 0.19619831442832947,
+  'token': 30412,
+  'token_str': ' mathematical'},
+ {'sequence': 'This course will teach you all about computational models.',
+  'score': 0.04052725434303284,
+  'token': 38163,
+  'token_str': ' computational'}]
+```
+
+##### Named Entity Recognition
+
+Find which parts of an input text are certain entities like persons, locations, organizations. Different models can tag inputs with different entity labels, like for parts of speech. 
+
+```{{python}}
+ner = pipeline("ner", grouped_entities=True)
+ner("My name is Sylvain and I work at Hugging Face in Brooklyn.")
+Copied
+[{'entity_group': 'PER', 'score': 0.99816, 'word': 'Sylvain', 'start': 11, 'end': 18}, 
+ {'entity_group': 'ORG', 'score': 0.97960, 'word': 'Hugging Face', 'start': 33, 'end': 45}, 
+ {'entity_group': 'LOC', 'score': 0.99321, 'word': 'Brooklyn', 'start': 49, 'end': 57}
+]
+```
+
+
+##### Question Answering 
+
+Answer a question based on given context
+
+```{{python}}
+question_answerer = pipeline("question-answering")
+question_answerer(
+    question="Where do I work?",
+    context="My name is Sylvain and I work at Hugging Face in Brooklyn",
+)
+{'score': 0.6385916471481323, 'start': 33, 'end': 45, 'answer': 'Hugging Face'}
+```
+
+##### Summarization
+
+Summarize a given input - turn it into a smaller portion of text, while still retaining all of the important information  
+
+```{{python}}
+summarizer = pipeline("summarization")
+summarizer(
+    """
+    America has changed dramatically during recent years. Not only has the number of 
+    graduates in traditional engineering disciplines such as mechanical, civil, 
+    electrical, chemical, and aeronautical engineering declined, but in most of 
+    the premier American universities engineering curricula now concentrate on 
+    and encourage largely the study of engineering science. As a result, there 
+    are declining offerings in engineering subjects dealing with infrastructure, 
+    the environment, and related issues, and greater concentration on high 
+    technology subjects, largely supporting increasingly complex scientific 
+    developments. While the latter is important, it should not be at the expense 
+    of more traditional engineering.
+
+    Rapidly developing economies such as China and India, as well as other 
+    industrial countries in Europe and Asia, continue to encourage and advance 
+    the teaching of engineering. Both China and India, respectively, graduate 
+    six and eight times as many traditional engineers as does the United States. 
+    Other industrial countries at minimum maintain their output, while America 
+    suffers an increasingly serious decline in the number of engineering graduates 
+    and a lack of well-educated engineers.
+"""
+)
+[{'summary_text': ' America has changed dramatically during recent years . The '
+                  'number of engineering graduates in the U.S. has declined in '
+                  'traditional engineering disciplines such as mechanical, civil '
+                  ', electrical, chemical, and aeronautical engineering . Rapidly '
+                  'developing economies such as China and India, as well as other '
+                  'industrial countries in Europe and Asia, continue to encourage '
+                  'and advance engineering .'}]
+```
+
+##### Translation
+
+Convert text from one language into another
+
+```{{python}}
+translator = pipeline("translation", model="Helsinki-NLP/opus-mt-fr-en")
+translator("Ce cours est produit par Hugging Face.")
+[{'translation_text': 'This course is produced by Hugging Face.'}]
+```
+
+## Transformers. How do they work?
+
+Transformers are language models that have been trained on a massive amount of raw, unlabeled data through a particular unsupervised learning technique called "self-supervised learning". This allows the model to build up a general understanding of the language it's trained on, but it isn't good at any particular task. 
+
+At this point, we can call this model a "general, pretrained transformer" (OMG THAT'S WHAT GPT STANDS FOR).
+
+We can then use *transfer learning* to fine-tune our transformer on labeled data (supervised learning).
+
+This practice of fine-tuning a pretained model to apply it towards specific use cases is preferable as the process of pre-training, that is starting from scratch and training a language model on a huge corpus text takes a massive amount of time & resources. So much so that the energy required for it has a very non-trivial carbon footprint. So yeah, I guess you could pretrain models yourself. IF YOU HATE THE EARTH.
+
+## (Very) General Architecture
+
+The Transformer model is comprised of two parts - an encoder and a decoder. 
+
+
+#### Encoder
+The **encoder** takes in the input and encodes it into a numerical representation (it's features) that the model can understand.  
+
+These 'feature vectors' are sequences of numbers with one sequence for each word in the input. A word's feature vectors are also influenced by the other words in the input. So in the case of inputs like "the horse" and "the grove", 'the' would be represented as a different sequence of numbers in each case. This is essentially just how the meaning of words are determined by the context in which they are used. 
+
+Encoders are also 'bi-directional', which means these feature vectors are influenced by words located before and after it in the text.
+
+They're usually trained through mask-filling tasks, so they build up a capability to understand words given the context of pre- and proceding words.
+
+Tasks that are centered around understanding an input, like classification or named entity recognition can be done with just the encoder.
+
+
+#### Decoder
+The **decoder** takes the features - our encoded representation, and possibly other inputs to generate an output. 
+
+Unlike encoders, they are uni-directional. The only have access to the words located either before or after a given word in a sequence. This makes sense since if our task is to generated a new string of words based on a preceding sequence, it would be trivialized if we had knowledge of what the upcoming words actually were. This is more relevant in the training of these models. We don't want the decoder to get into the habit of generating its predictions for future words, by just peeking ahead in the training data and seeing what those words actually are, since it won't be able to do this when we actually try and use it to complete a sentence, since there will be nothing to peek ahead at.
+
+These models are also auto-regressive, meaning sequential predictions build upon each other, using previous predictions as input. For example, if we ask it to predict the next 4 words in a sentence, it will predict word 1, use word 1 to predict word 2, use words 1 & 2 to predict word 3, and so on. 
+
+They're trained through text generation tasks, so they build up the capaibility to predict words in sequence.
+
+These are used for generative tasks like text generation. 
+
+#### Attention Layers
+
+Transformers have a key feature called 'attention layers' that have enabled their impressive performance. At a very high level, when the model is dealing with the representation a.k.a trying to understand  the words in an input, the attention layer tells it to pay attention to other specific words to better understand that particular word. 
+
+An example would be for translating from English, to a language with gendered nouns like Spanish. To translate "the bike" to Spanish, the model will look at the words 'the' and 'bike'. However, when translating 'the', the model will also need to pay attention to the word 'bike', because that will tell it if it should be masculine or feminine i.e. determine if it's 'el' or 'la'. 
+
+#### Sequence-to-sequence models
+
+They can be used in tandem for generative tasks that require understanding of an input, like translation or summarization. The encoder takes in an input sequence and outputs a the feature vectors - our numerical representation of the input. The decoder takes in this feature vector as input, along with any other inputs (which as we start predicting tokens, would be our sequence of previously predicted tokens) and generates predictions for subsequent tokens. 
+
+
+
