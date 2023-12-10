@@ -1,0 +1,11 @@
+{
+  "hash": "40c85602f01e386cf9d98a526fd08f68",
+  "result": {
+    "markdown": "---\ntitle: 'Hugging Face NLP Course: '\nauthor: Alex Liu\ndate: '2023-10-11'\ncategories:\n  - happy\n  - bappy\nimage: image.jpg\n---\n\ntest\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

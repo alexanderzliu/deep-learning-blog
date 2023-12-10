@@ -12,12 +12,15 @@ jupyter: python3
 In this lesson we'll be exploring methods of tabular modeling. Tabular data is represented in a table i.e a spreadsheet with columns and rows. Our goal is to use the data in our columns to predict the value of another column. 
 
 ```{python}
+%matplotlib inline
+
+
+
 import sys
-!{sys.executable} -m pip install fastbook kaggle waterfallcharts treeinterpreter dtreeviz
+!{sys.executable} -m pip3 install fastbook kaggle waterfallcharts treeinterpreter dtreeviz
 
 import fastbook
 fastbook.setup_book()
-
 
 
 from fastbook import *
@@ -27,6 +30,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor
 from dtreeviz.trees import *
 from IPython.display import Image, display_svg, SVG
+from treeinterpreter import *
 
 pd.options.display.max_rows = 20
 pd.options.display.max_columns = 8
@@ -59,7 +63,7 @@ Yay, I'm now so excited to use decision trees. In fact why don't I use one to mo
 creds = '{"username":"alexanderzliu","key":"59b8c0e913b2beb56e71628b918cba51"}'
 
 cred_path = Path('~/.kaggle/kaggle.json').expanduser()
-if not cred_path.exists():4
+if not cred_path.exists():
     cred_path.parent.mkdir(exist_ok=True)
     cred_path.write_text(creds)
     cred_path.chmod(0o600)
@@ -92,10 +96,10 @@ Let's take care of an 'ordinal' column. This is kinda a middle point between our
 We'll make our 'ProductSize' column values take on the type 'category'. Then we can pass in a list of those categories with a specific order, setting the 'ordered' parameter to True. 
 
 ```{python}
-print(f'Product Size levels: {df['ProductSize'].unique()}')
+print(f"Product Size levels: {df['ProductSize'].unique()}")
 sizes = 'Large','Large / Medium','Medium','Small','Mini','Compact'
 df['ProductSize'] = df['ProductSize'].astype('category')
-df['ProductSize'].cat.set_categories(sizes, ordered=True, inplace=True)
+df['ProductSize'].cat.set_categories(sizes, ordered=True)
 ```
 
 The Kaggle competition asks uses to use the root mean squared log error (RMSLE) between actual and predicted auction prices as our metric - our statistic informing us of how well our model is performing. Roots, logs and trees; data scientists can't get enough of plants.
@@ -417,7 +421,7 @@ This translates to our working dataset by keeping all the columns the same excep
 
 In plotting this, we can see that the year and price have a very strong, positively correlated relationship, as we'd except. The 'ProductSize' doesn't quite have as clean a relationship though, which we'll talk about shortly. 
 
-```{python}
+```{{python}}
 from sklearn.inspection import plot_partial_dependence
 
 fig,ax = plt.subplots(figsize=(12, 4))
@@ -425,9 +429,6 @@ plot_partial_dependence(m, valid_xs_final, ['YearMade','ProductSize'],
                         grid_resolution=20, ax=ax);
 ```
 
-```{python}
-DATA LEAKAGE
-```
 
 We've seen how much an impact our features have aggregated across our entire dataset, but what if we wanted to drill down into a single row and analyze how our features influenced the prediction for that one data point? 
 
@@ -440,14 +441,14 @@ The output we'll get from the .predict() method is:
 - bias: the prediction we'd get just by taking the mean of our dependent variable. This would be equivalent to if our model was just the root of the tree with no branches
 - contributions: The increase or decrease in our prediction based on branch split we take on our path to a leaf node a.k.a the change in our prediction caused by the independent variables. Summing this up, and adding it to our bias will equal the prediction. 
 
-```{python}
+```{{python}}
 row = valid_xs_final.iloc[:5]
 prediction,bias,contributions = treeinterpreter.predict(m, row.values)
 ```
 
 Plotting these contributions, we can visualize the impact that each of the independent variables had on our prediction. 
 
-```{python}
+```{{python}}
 waterfall(valid_xs_final.columns, contributions[0], threshold=0.08, 
           rotation_value=45,formatting='{:,.3f}');
 ```
@@ -534,7 +535,7 @@ Alright, would we really be data scientists if we didn't throw a neural network 
 ```{python}
 df_nn = pd.read_csv(path/'TrainAndValid.csv', low_memory=False)
 df_nn['ProductSize'] = df_nn['ProductSize'].astype('category')
-df_nn['ProductSize'].cat.set_categories(sizes, ordered=True, inplace=True)
+df_nn['ProductSize'].cat.set_categories(sizes, ordered=True)
 df_nn[dep_var] = np.log(df_nn[dep_var])
 df_nn = add_datepart(df_nn, 'saledate')
 df_nn_final = df_nn[list(xs_final_time.columns) + [dep_var]]
