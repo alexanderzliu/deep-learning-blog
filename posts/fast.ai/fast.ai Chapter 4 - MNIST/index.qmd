@@ -1,5 +1,5 @@
 ---
-title: "Practical Deep Learning for Coders: Neural Net Foundations w/ MNIST Image Recognition"
+title: "Neural Net Foundations w/ MNIST Image Recognition"
 author: "Alex Liu"
 date: "2023-10-17"
 categories: 

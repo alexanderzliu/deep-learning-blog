@@ -1,12 +1,12 @@
 ---
 title: "Hugging Face NLP I: Transformer Architecture Overview"
 author: "Alex Liu"
-date: "2023-11-"
+date: "2023-11-31"
 categories: 
     - Hugging Face
     - NLP
     - Course Notes
-image: "image.jpg"
+image: "huggingface1.png"
 jupyter: python3
 ---
 

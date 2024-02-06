@@ -1,5 +1,5 @@
 ---
-title: "Welcome To My Blog ^_^"
+title: "Welcome"
 author: "Alexander Liu"
 date: "2023-10-08"
 ---
