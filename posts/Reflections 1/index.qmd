@@ -4,9 +4,7 @@ author: "Alexander Liu"
 date: "2023-10-23"
 categories: [Reflections]
 ---
-As I'm creating this blog to document my adventures in learning deep learning I realize that now I have the perfect medium (haha get IT?) to share my thoughts on whatever I want, and there's literally nothing anybody can do about it. So let me start facting: 
-
-EPIC QUOTE ALERT: "If you don't have time to do it right, when will you have time to do it over?"
+"If you don't have time to do it right, when will you have time to do it over?"
 
 I am a fan of progression, of move towards a goal. Or at least the illusion of it. Maybe even at the expense of any positive outcomes that would result from actually working towards that goal. I used to play RuneScape, so an arbitrary number ticking upwards towards another completely arbitrary threshold appealed to me. 
 For learning, this manifests as a eagerness to move onto the next lesson after I've 'finished' going through all the material, but in no way having absorbed it all. I'm well aware of this now, my goal isn't to watch a bunch of lectures, or scroll through a bunch of code cells, but to actual learn deeply. So this blog is my way of slowing down while going through these lessons (focusing on fast.ai's Practical Deep Learning for Coders atm)to better digest the material by translating it into my own thoughts and the way that I undertand it. It'll also guarantee that I have something to show for along the way. This is my way of doing things right. 
