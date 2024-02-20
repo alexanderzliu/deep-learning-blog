@@ -1,7 +1,7 @@
 ---
 title: "Welcome"
 author: "Alexander Liu"
-date: "2023-10-08"
+date: "2023-11-08"
 ---
 
 Welcome to a collection of machine learning excercises and explanations, compiled through my self-study of the subject. If you are reading this you're a potential employer or my girlfriend. Either way, your support is appreciated. 

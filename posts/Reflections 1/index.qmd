@@ -1,7 +1,7 @@
 ---
 title: "Reflections: Starting Off Right"
 author: "Alexander Liu"
-date: "2023-10-23"
+date: "2023-11-15"
 categories: [Reflections]
 ---
 "If you don't have time to do it right, when will you have time to do it over?"
@@ -12,6 +12,6 @@ It's critical that these KPIs are defined in a way that accurately reflect one's
 
 Take my current goals of self-studying topics in data science and machine learning. My progress through various courses and materials is a convenient but ultimately flawed reflection of the progress I've made in understanding a subject. My goal isn't to watch a bunch of lectures, or scroll through a bunch of code cells, but to actual learn deeply. So this blog is my way of slowing down while going through these lessons to better digest the material by translating it into my own thoughts and the way that I undertand it. It'll also guarantee that I have something to show for along the way. This is my way of doing things right. 
 
-I figured it would be also be a good excercise in communication. Another intention of mine is to become more adept at composing my thoughts into writing. I spend a non-trivial amount of my current job communicating through email, and spend probably too much time trying to construct the perfect phrasing, only to get a response where the other person misspells their own name when signing off. If anything, I just respect the efficiency.
+I figured it would be also be a good excercise in communication. Another intention of mine is to become more adept at composing my thoughts into writing. I spend a non-trivial amount of my current job communicating through email, and spend probably too much time trying to construct the perfect phrasing, only to get a response where the other person *misspells their own name when signing off*. If anything, I just respect the efficiency.
 
 -Aelx

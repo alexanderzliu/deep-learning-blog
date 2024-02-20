@@ -1,13 +1,12 @@
 ---
 title: "Neural Net Foundations w/ MNIST Image Recognition"
 author: "Alex Liu"
-date: "2023-10-17"
+date: "2023-11-30"
 categories: 
     - fast.ai
     - Neural Networks
     - Gradient Descent 
 jupyter: python3
-
 ---
 Okay let's go finally learning about what everyone want's to know about when learning about AI and Machine Learning: stochastic gradient descent.
 
